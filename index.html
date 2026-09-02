@@ -13,6 +13,23 @@
   <!-- 3D Fullscreen Canvas: strictly centered head framed in 100vmin -->
   <canvas id="faceCanvas" role="img" aria-label="Interactive 3D neural face wireframe and polygonal mesh"></canvas>
 
+  <!-- Floating Telemetry Metrics Overlay (Top-Left) -->
+  <div id="hudMetrics" class="hud-metrics-floating" aria-label="Real-time performance metrics">
+    <div class="metric-chip">
+      <span class="metric-dot" id="fpsDot"></span>
+      <span class="metric-title">FPS</span>
+      <span class="metric-value" id="valFpsOverlay">60</span>
+    </div>
+    <div class="metric-chip">
+      <span class="metric-title">MS</span>
+      <span class="metric-value" id="valMsOverlay">2.1ms</span>
+    </div>
+    <div class="metric-chip">
+      <span class="metric-title">LOD</span>
+      <span class="metric-value" id="valLodOverlay">AUTO (ULTRA)</span>
+    </div>
+  </div>
+
   <!-- The SINGLE Master Trigger Button for all controls -->
   <button id="menuTrigger" class="hud-main-trigger" aria-label="Open Control Matrix" aria-expanded="false" title="Menu (M)">
     <span class="trigger-icon">⚙</span>
@@ -36,13 +53,17 @@
     </div>
 
     <div class="panel-content">
-      <!-- Section: Real-Time Telemetry -->
+      <!-- Section: Real-Time Telemetry & Performance -->
       <div class="control-group">
-        <div class="group-title">TELEMETRY</div>
+        <div class="group-title">TELEMETRY & PERFORMANCE</div>
         <div class="hud-stats-grid">
           <div class="stat-badge">
             <span class="stat-label">FPS</span>
             <span class="stat-value" id="valFps">60</span>
+          </div>
+          <div class="stat-badge">
+            <span class="stat-label">RENDER</span>
+            <span class="stat-value" id="valMs">2.1ms</span>
           </div>
           <div class="stat-badge">
             <span class="stat-label">PITCH</span>
@@ -56,7 +77,17 @@
             <span class="stat-label">ZOOM</span>
             <span class="stat-value" id="valZoom">1.00x</span>
           </div>
+          <div class="stat-badge">
+            <span class="stat-label">TRIS</span>
+            <span class="stat-value" id="valTris">898</span>
+          </div>
         </div>
+
+        <label class="toggle-control">
+          <span>Auto-Quality (60 FPS Lock)</span>
+          <input type="checkbox" id="toggleAutoQuality" checked>
+          <span class="toggle-slider"></span>
+        </label>
       </div>
 
       <!-- Section: Quick Actions -->

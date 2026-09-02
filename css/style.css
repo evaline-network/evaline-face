@@ -58,6 +58,64 @@ html, body {
 }
 
 /* ==========================================================================
+   Floating Telemetry Metrics Overlay (Top-Left)
+   ========================================================================== */
+.hud-metrics-floating {
+  position: absolute;
+  top: max(20px, env(safe-area-inset-top));
+  left: max(24px, env(safe-area-inset-left));
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--panel-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--panel-border);
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+.metric-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.metric-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00ff66;
+  box-shadow: 0 0 8px #00ff66;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.metric-dot.warn {
+  background: #ffcc00;
+  box-shadow: 0 0 8px #ffcc00;
+}
+
+.metric-dot.low {
+  background: #ff0055;
+  box-shadow: 0 0 8px #ff0055;
+}
+
+.metric-title {
+  color: var(--text-muted);
+}
+
+.metric-value {
+  color: var(--accent-cyan);
+  font-weight: 700;
+}
+
+/* ==========================================================================
    The SINGLE Master Trigger Button (Always visible)
    ========================================================================== */
 .hud-main-trigger {
@@ -285,7 +343,7 @@ html, body {
 /* Telemetry Grid inside Panel */
 .hud-stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
 }
 

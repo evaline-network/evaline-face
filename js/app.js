@@ -21,6 +21,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Telemetry elements
   const fpsEl = document.getElementById('valFps');
+  const fpsOverlayEl = document.getElementById('valFpsOverlay');
+  const fpsDotEl = document.getElementById('fpsDot');
+  const msEl = document.getElementById('valMs');
+  const msOverlayEl = document.getElementById('valMsOverlay');
+  const lodOverlayEl = document.getElementById('valLodOverlay');
+  const trisEl = document.getElementById('valTris');
   const pitchEl = document.getElementById('valPitch');
   const yawEl = document.getElementById('valYaw');
   const zoomEl = document.getElementById('valZoom');
@@ -49,11 +55,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Calculate FPS
     frameCount++;
     fpsTimer += delta;
-    if (fpsTimer >= 0.5) {
+    if (fpsTimer >= 0.4) {
       currentFps = Math.round(frameCount / fpsTimer);
       frameCount = 0;
       fpsTimer = 0;
+
       if (fpsEl) fpsEl.textContent = currentFps;
+      if (fpsOverlayEl) fpsOverlayEl.textContent = currentFps;
+      if (fpsDotEl) {
+        if (currentFps >= 55) {
+          fpsDotEl.className = 'metric-dot';
+        } else if (currentFps >= 40) {
+          fpsDotEl.className = 'metric-dot warn';
+        } else {
+          fpsDotEl.className = 'metric-dot low';
+        }
+      }
     }
 
     // Update 3D Camera & Controls
@@ -69,7 +86,13 @@ document.addEventListener('DOMContentLoaded', () => {
       now * 0.001          // Time in seconds
     );
 
-    // Update telemetry display (normalized yaw 0-359°)
+    // Update real-time telemetry metrics
+    const renderMsStr = renderer.lastRenderTimeMs.toFixed(1) + 'ms';
+    if (msEl) msEl.textContent = renderMsStr;
+    if (msOverlayEl) msOverlayEl.textContent = renderMsStr;
+    if (lodOverlayEl) lodOverlayEl.textContent = renderer.qualityName;
+    if (trisEl) trisEl.textContent = renderer.renderableTriangles ? renderer.renderableTriangles.length : renderer.faceData.triangleCount;
+
     if (pitchEl) pitchEl.textContent = (controls.rotX * (180 / Math.PI)).toFixed(0) + '°';
     if (yawEl) {
       const normYaw = (((controls.rotY * (180 / Math.PI)) % 360) + 360) % 360;
@@ -107,6 +130,15 @@ function bindControls(renderer, controls) {
     toggleFaces.checked = renderer.options.showFaces;
     toggleFaces.addEventListener('change', (e) => {
       renderer.options.showFaces = e.target.checked;
+    });
+  }
+
+  const toggleAutoQuality = document.getElementById('toggleAutoQuality');
+  if (toggleAutoQuality) {
+    toggleAutoQuality.checked = renderer.options.autoQuality;
+    toggleAutoQuality.addEventListener('change', (e) => {
+      renderer.options.autoQuality = e.target.checked;
+      renderer.autoQuality = e.target.checked;
     });
   }
 

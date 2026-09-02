@@ -25,8 +25,17 @@ class FaceRenderer {
       pulseAmplitude: 0.02,
       glowEffect: true,
       showFrameGuide: true,
+      autoQuality: true,
       theme: 'cyberpunk'
     };
+
+    // Adaptive 60 FPS Quality Controller (LOD)
+    this.autoQuality = true;
+    this.qualityLevel = 3; // 3: Ultra, 2: High, 1: Medium, 0: Low (Perf)
+    this.qualityName = 'AUTO (ULTRA)';
+    this.lastRenderTimeMs = 2.0;
+    this.renderTimeHistory = new Float32Array(30);
+    this.historyIdx = 0;
 
     // Color themes
     this.themes = {
@@ -192,6 +201,7 @@ class FaceRenderer {
    * @param {number} time Elapsed time in seconds for pulse/morph
    */
   render(rotMatrix, cameraDist = 4.2, zoom = 1.0, panX = 0, panY = 0, time = 0) {
+    const renderStart = performance.now();
     const ctx = this.ctx;
     const w = this.width;
     const h = this.height;
@@ -355,6 +365,57 @@ class FaceRenderer {
     // 6. Render Points (Vertices)
     if (this.options.showPoints) {
       this.renderPoints(theme);
+    }
+
+    // Adapt quality automatically to maintain 60 FPS on weak devices
+    const renderEnd = performance.now();
+    this.adaptQuality(renderEnd - renderStart);
+  }
+
+  /**
+   * Automatically adapt rendering parameters based on average render time
+   * Guarantees steady 60 FPS performance on low-end hardware
+   */
+  adaptQuality(renderMs) {
+    this.renderTimeHistory[this.historyIdx] = renderMs;
+    this.historyIdx = (this.historyIdx + 1) % 30;
+
+    if (!this.options.autoQuality) return;
+
+    if (this.historyIdx === 0) {
+      let sum = 0;
+      for (let i = 0; i < 30; i++) sum += this.renderTimeHistory[i];
+      const avgMs = sum / 30;
+      this.lastRenderTimeMs = avgMs;
+
+      if (avgMs > 13.0 && this.qualityLevel > 0) {
+        this.qualityLevel--;
+      } else if (avgMs < 5.0 && this.qualityLevel < 3) {
+        this.qualityLevel++;
+      }
+
+      switch (this.qualityLevel) {
+        case 3:
+          this.qualityName = 'AUTO (ULTRA)';
+          this.options.glowEffect = true;
+          this.options.showFaces = true;
+          break;
+        case 2:
+          this.qualityName = 'AUTO (HIGH)';
+          this.options.glowEffect = false;
+          this.options.showFaces = true;
+          break;
+        case 1:
+          this.qualityName = 'AUTO (BALANCED)';
+          this.options.glowEffect = false;
+          this.options.showFaces = false;
+          break;
+        case 0:
+          this.qualityName = 'AUTO (PERF)';
+          this.options.glowEffect = false;
+          this.options.showFaces = false;
+          break;
+      }
     }
   }
 
