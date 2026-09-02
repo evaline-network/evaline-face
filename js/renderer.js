@@ -14,7 +14,7 @@ class FaceRenderer {
       showPoints: true,
       showWireframe: true,
       showFaces: true,
-      backfaceCulling: false,
+      backfaceCulling: true,
       pointSize: 2.2,
       lineWidth: 0.9,
       faceOpacity: 0.35,
