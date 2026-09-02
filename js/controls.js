@@ -152,7 +152,7 @@ class OrbitControls {
   }
 
   onTouchMove(e) {
-    e.preventDefault();
+    if (e.cancelable) e.preventDefault();
     if (e.touches.length === 1 && this.isDragging) {
       const dx = e.touches[0].clientX - this.lastMouseX;
       const dy = e.touches[0].clientY - this.lastMouseY;
@@ -178,8 +178,15 @@ class OrbitControls {
     }
   }
 
-  onTouchEnd() {
-    this.isDragging = false;
+  onTouchEnd(e) {
+    if (e && e.touches && e.touches.length === 1) {
+      // Smooth transition from 2-finger pinch back to 1-finger rotate
+      this.isDragging = true;
+      this.lastMouseX = e.touches[0].clientX;
+      this.lastMouseY = e.touches[0].clientY;
+    } else {
+      this.isDragging = false;
+    }
     this.lastTouchDist = 0;
   }
 

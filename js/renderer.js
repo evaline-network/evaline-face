@@ -139,7 +139,7 @@ class FaceRenderer {
   }
 
   resize() {
-    this.dpr = window.devicePixelRatio || 1;
+    this.dpr = Math.min(window.devicePixelRatio || 1, 2.0);
     const rect = this.canvas.getBoundingClientRect();
     this.width = Math.max(1, rect.width || window.innerWidth || 800);
     this.height = Math.max(1, rect.height || window.innerHeight || 600);
