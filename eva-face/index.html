@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Eva Face • 3D Genesis Animation</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- 3D Fullscreen Canvas -->
+  <div id="canvasContainer">
+    <canvas id="evaCanvas"></canvas>
+  </div>
+
+  <!-- Top Header HUD -->
+  <header class="hud-header">
+    <div class="brand-wrapper">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24">
+          <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon>
+          <line x1="12" y1="2" x2="12" y2="22"></line>
+          <line x1="2" y1="8.5" x2="22" y2="15.5"></line>
+          <line x1="2" y1="15.5" x2="22" y2="8.5"></line>
+        </svg>
+      </div>
+      <div>
+        <h1 class="brand-title">EVA FACE</h1>
+        <div class="brand-subtitle">3D GENESIS // MINIMALIST NEURAL MESH</div>
+      </div>
+    </div>
+
+    <!-- Active Stage Badge -->
+    <div class="stage-pill glass-panel">
+      <span class="stage-pulse"></span>
+      <span id="stagePillText">00 // THE VOID</span>
+    </div>
+  </header>
+
+  <!-- Narrative Poetic Overlay -->
+  <div class="narrative-container">
+    <p id="narrativeText" class="narrative-text">В бесконечной тишине рождается квантовая сингулярность.</p>
+  </div>
+
+  <!-- Interaction Help Hint -->
+  <div class="help-hint">
+    <div>Левая кнопка мыши: 3D Вращение</div>
+    <div>Колесо мыши: Приближение / Масштаб</div>
+    <div>Пробел: Пауза • Клавиша R: Повтор</div>
+  </div>
+
+  <!-- Bottom HUD Matrix -->
+  <nav class="hud-bottom glass-panel" aria-label="Playback Controls">
+    <!-- Scrubber Row -->
+    <div class="timeline-row">
+      <div class="timeline-slider-wrap">
+        <input type="range" id="timelineSlider" class="timeline-slider" min="0" max="100" value="0" step="0.1" aria-label="Animation Timeline Scrubber">
+      </div>
+      <div id="timeDisplay" class="time-display">0:00.0 / 0:18.0</div>
+    </div>
+
+    <!-- Controls Row -->
+    <div class="controls-row">
+      <!-- Playback Buttons -->
+      <div class="btn-group">
+        <button id="btnPlay" class="hud-btn" title="Старт / Пауза (Пробел)" aria-label="Play or Pause">
+          <svg id="btnPlayIcon" viewBox="0 0 24 24">
+            <rect x="6" y="4" width="4" height="16"></rect>
+            <rect x="14" y="4" width="4" height="16"></rect>
+          </svg>
+          <span>PLAY</span>
+        </button>
+
+        <button id="btnReplay" class="hud-btn" title="С начала (R)" aria-label="Replay">
+          <svg viewBox="0 0 24 24">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+          </svg>
+          <span>REPLAY</span>
+        </button>
+
+        <button id="btnRotate" class="hud-btn active" title="Автоматическое вращение" aria-label="Toggle Auto Rotation">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M16 12l-4-4-4 4"></path>
+            <path d="M12 16V8"></path>
+          </svg>
+          <span>AUTO-ORBIT</span>
+        </button>
+      </div>
+
+      <!-- Stage Quick Jumps -->
+      <div class="stage-btn-group" aria-label="Jump to Genesis Stage">
+        <button class="stage-btn" data-stage="0">0. Пустота</button>
+        <button class="stage-btn" data-stage="1">1. Точки</button>
+        <button class="stage-btn" data-stage="2">2. Треугольник</button>
+        <button class="stage-btn" data-stage="3">3. Сфера</button>
+        <button class="stage-btn" data-stage="4">4. Ева Face</button>
+      </div>
+
+      <!-- Color Themes -->
+      <div class="theme-picker" title="Выбор цветовой темы">
+        <button class="theme-swatch swatch-cyan active" data-theme="cyan" aria-label="Cyan theme"></button>
+        <button class="theme-swatch swatch-rose" data-theme="rose" aria-label="Rose theme"></button>
+        <button class="theme-swatch swatch-emerald" data-theme="emerald" aria-label="Emerald theme"></button>
+        <button class="theme-swatch swatch-silver" data-theme="silver" aria-label="Silver theme"></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Scripts: Standalone & Independent -->
+  <script src="faceData.js"></script>
+  <script src="math3d.js"></script>
+  <script src="evaFaceAnimation.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
